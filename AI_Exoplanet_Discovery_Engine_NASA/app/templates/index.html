@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Exoplanet Discovery Engine</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main class="container">
+<header>
+<h1>AI Exoplanet<br><span>Discovery Engine</span></h1>
+<p>Machine-learning analysis of Kepler Objects of Interest for exoplanet candidate detection.</p>
+</header>
+
+<section class="cards">
+<div class="card"><small>Objects analysed</small><strong>{{ stats.total }}</strong></div>
+<div class="card"><small>Predicted candidates</small><strong>{{ stats.candidates }}</strong></div>
+<div class="card"><small>Best model</small><strong>{{ stats.best_model }}</strong></div>
+<div class="card"><small>Best F1 score</small><strong>{{ stats.best_f1 }}%</strong></div>
+</section>
+
+<section class="panel">
+<div class="panel-title"><h2>Model Performance</h2><span>Classification comparison</span></div>
+{% if metrics %}
+<table>
+<tr><th>MODEL</th><th>ACCURACY</th><th>PRECISION</th><th>RECALL</th><th>F1</th><th>ROC-AUC</th></tr>
+{% for r in metrics %}
+<tr>
+<td>{{ r.model }}</td>
+<td>{{ "%.2f"|format(r.accuracy*100) }}%</td>
+<td>{{ "%.2f"|format(r.precision*100) }}%</td>
+<td>{{ "%.2f"|format(r.recall*100) }}%</td>
+<td>{{ "%.2f"|format(r.f1*100) }}%</td>
+<td>{{ "%.2f"|format(r.roc_auc*100) }}%</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<div class="empty">Run the training and evaluation scripts to populate the dashboard.</div>
+{% endif %}
+</section>
+
+<section class="grid">
+<div class="panel">
+<h2>Pipeline</h2>
+<div class="pipeline">
+<div>NASA KOI</div><i>→</i><div>Cleaning</div><i>→</i><div>Features</div><i>→</i><div>ML Models</div>
+</div>
+</div>
+<div class="panel">
+<h2>Models</h2>
+<p>Random Forest · XGBoost · SVM · Logistic Regression</p>
+</div>
+</section>
+
+</main>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
